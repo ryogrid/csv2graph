@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # Usage example:
-# python gen-graph-image.py --data ./hoge.csv --range 2 --columns a,c,e --out mygraph.png
+# python csv2graph.py --data ./hoge.csv --range 2 --columns a,c,e --out mygraph.png
 
 def parse_args():
     parser = argparse.ArgumentParser(description="CSVから散布図を生成する")
