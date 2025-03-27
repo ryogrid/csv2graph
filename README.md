@@ -23,7 +23,7 @@ pip install -r requirements.txt
 ## 使用方法
 
 ```bash
-python gen-graph-image.py --data CSVファイルパス --range X軸最大値 --columns 系列1,系列2 [オプション]
+python csv2graph.py --data CSVファイルパス --range X軸最大値 --columns 系列1,系列2 [オプション]
 ```
 
 ### オプション
