@@ -41,7 +41,7 @@ python csv2graph.py --data CSVファイルパス --range X軸最大値 --columns
 ## 使用例
 
 ```bash
-python gen-graph-image.py --data ./sample.csv --range 50 --columns a,c,e --size 800x600 --skip 2 --xdata true --out output.png
+python csv2graph.py --data ./sample.csv --range 50 --columns a,c,e --size 800x600 --skip 2 --xdata true --out output.png
 ```
 
 ## ライセンス
