@@ -5,8 +5,10 @@ CSVファイルから簡単に散布図を生成するPython製のコマンド�
 ## 機能
 
 - CSVファイルから指定した列を用いて散布図を作成します。
+- 同じ系列の点は直線で結ばれ、データの傾向を視覚的に確認できます。
 - X軸の範囲指定、画像サイズの指定、データの間引きが可能です。
 - X軸の値がCSV内に存在しない場合でも、自動で番号を振って対応します。
+- グラフの幅に応じて適切な目盛りの間隔が自動的に調整されます。
 
 ## 必要な環境
 
@@ -23,7 +25,7 @@ pip install -r requirements.txt
 ## 使用方法
 
 ```bash
-python csv2graph.py --data CSVファイルパス --range X軸最大値 --columns 系列1,系列2 [オプション]
+python csv2graph.py --data CSVファイルパス --columns 系列1,系列2 [オプション]
 ```
 
 ### オプション
@@ -31,7 +33,7 @@ python csv2graph.py --data CSVファイルパス --range X軸最大値 --columns
 | オプション  | 説明                             | デフォルト値   | 指定例          |
 |-------------|---------------------------------|---------------|-----------------|
 | --data      | CSVファイルのパス                | 必須          | ./data.csv     |
-| --range     | X軸の最大値                      | 必須          | 100             |
+| --range     | X軸の最大値（この値以下をプロット） | 任意          | 100             |
 | --columns   | 描画対象の系列をカンマ区切りで指定 | 必須          | a,b,c           |
 | --size      | 出力画像サイズ（WIDTHxHEIGHT）   | 768x512       | 800x600         |
 | --skip      | データの間引き間隔（N個ごと）     | 1             | 2               |
@@ -41,8 +43,46 @@ python csv2graph.py --data CSVファイルパス --range X軸最大値 --columns
 ## 使用例
 
 ```bash
-python gen-graph-image.py --data ./sample.csv --range 50 --columns a,c,e --size 800x600 --skip 2 --xdata true --out output.png
+# 全データをプロット
+python csv2graph.py --data ./sample.csv --columns a,c,e --size 800x600 --skip 2 --xdata true --out output.png
+
+# 特定の範囲までプロット
+python csv2graph.py --data ./sample.csv --range 50 --columns a,c,e --out output.png
 ```
+
+## CSVファイルの例
+
+以下のような形式のCSVファイルに対応しています：
+
+```csv
+_,a,b,c,d
+1,10,15,20,25
+2,12,18,22,28
+3,14,20,25,30
+4,16,22,28,32
+5,18,25,30,35
+```
+
+このCSVファイルでは：
+- 1列目がX軸の値となります（`--xdata true`を指定した場合）
+- 2列目以降が各系列のデータとなります
+- カンマ区切りで数値を記述します
+- ヘッダー行は必須です
+
+### X軸用のデータが無い場合のCSVファイルの例
+
+X軸用のデータが無い場合、以下のような形式のCSVファイルを使用できます：
+
+```csv
+a,b,c,d
+10,15,20,25
+12,18,22,28
+14,20,25,30
+16,22,28,32
+18,25,30,35
+```
+
+この場合、X軸の値は自動的に1から始まる番号が振られます（`--xdata`を指定しないか、`--xdata false`を指定した場合）
 
 ## ライセンス
 
