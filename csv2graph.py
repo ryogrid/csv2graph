@@ -17,6 +17,7 @@ def parse_args():
     parser.add_argument('--xdata', type=lambda x: (str(x).lower() == 'true'), default=False,
                         help="X軸の値がCSVに含まれているかどうかを真理値で指定（trueまたはfalse、デフォルトはfalse）")
     parser.add_argument('--out', default="scatter_plot.png", help="出力画像ファイル名（デフォルトはscatter_plot.png）")
+    parser.add_argument('--xscale', help="X軸の値を指定した値域にマッピングする（START,END形式）")
     return parser.parse_args()
 
 def generate_colors(n):
@@ -96,6 +97,14 @@ def main():
     else:
         df_filtered = df
         x_max = df_filtered[x_col].max()
+
+    # X軸の値域マッピング処理
+    if args.xscale:
+        start, end = map(float, args.xscale.split(','))
+        # X軸の最大値をendに設定
+        x_max = end
+        # 値をstartからendにマッピング
+        df_filtered[x_col] = start + (df_filtered[x_col] / df_filtered[x_col].max()) * (end - start)
 
     # データを間引き
     df_filtered = df_filtered.iloc[::args.skip, :]
