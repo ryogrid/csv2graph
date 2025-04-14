@@ -1,82 +1,72 @@
-# csv2graph
+# csv2graph (Go Version)
 
-A Python command-line tool that generates scatter plots from CSV files.
+A Go command-line tool that generates scatter plots from CSV files
 
 ![example.png](./example.png)
 
 ## Features
 
-- Creates scatter plots from specified columns in CSV files
-- Supports X-axis range specification, image size adjustment, and data thinning
-- Automatically handles cases where X-axis values are not included in the CSV
+- Draw scatter plots from specified columns in CSV files
+- Support for X-axis range specification, image size adjustment, and data thinning
+- Automatic handling when CSV doesn't have X-axis values
 
 ## Requirements
 
-- Python 3.x
+- Go 1.16 or later
+- External dependency: github.com/fogleman/gg
 
 ## Installation
 
-### Using a Virtual Environment (Recommended)
-
-It's recommended to use a virtual environment to avoid dependency conflicts:
-
 ```bash
-# Create a virtual environment
-python -m venv venv
+# Install dependencies
+go get github.com/fogleman/gg
 
-# Activate the virtual environment
-# On Windows:
-venv\Scripts\activate
-# On macOS/Linux:
-source venv/bin/activate
+# Build
+go build -o csv2graph csv2graph.go
 
-# Install required libraries
-pip install -r requirements.txt
-```
-
-### Direct Installation
-
-If you prefer not to use a virtual environment, you can install dependencies directly:
-
-```bash
-pip install -r requirements.txt
+# Or run directly
+go run csv2graph.go --data CSV_FILE_PATH --columns SERIES1,SERIES2 [options]
 ```
 
 ## Usage
 
 ```bash
-python csv2graph.py --data CSV_FILE_PATH --columns SERIES1,SERIES2 [options]
+csv2graph --data CSV_FILE_PATH --columns SERIES1,SERIES2 [options]
 ```
 
 ### Options
 
-| Option      | Description                               | Default Value | Example       |
-|-------------|-------------------------------------------|---------------|---------------|
-| --data      | Path to CSV file                          | Required      | ./data.csv    |
-| --range     | Maximum value for X-axis                  | Optional      | 100           |
-| --columns   | Comma-separated list of columns to plot   | Required      | a,b,c         |
-| --size      | Output image size (WIDTHxHEIGHT)          | 768x512       | 800x600       |
-| --skip      | Data thinning interval (every Nth element)| 1             | 2             |
-| --xdata     | Whether X-axis values are included in CSV | false         | true          |
-| --out       | Output image filename                     | scatter_plot.png | mygraph.png |
-| --xscale    | Map X-axis values to specified range      | Optional      | 0,100         |
+| Option     | Description                            | Default     | Example      |
+|------------|----------------------------------------|-------------|--------------|
+| --data     | Path to CSV file                       | Required    | ./data.csv   |
+| --range    | Maximum X-axis value                   | Optional    | 100          |
+| --columns  | Columns to plot (comma-separated)      | Required    | a,b,c        |
+| --size     | Output image size (width x height)     | 768x512     | 800x600      |
+| --skip     | Data thinning interval (plot every Nth)| 1           | 2            |
+| --xdata    | When specified, CSV has X-axis values in first column | false (omitted) | --xdata |
+| --out      | Output filename                        | scatter_plot.png | mygraph.png |
+| --xscale   | Map X values to specified range        | Optional    | 0,100        |
+| --title    | Graph title                            | "Scatter Plot from CSV" | "Temperature Data" |
 
 ## Examples
 
 ```bash
 # Plot all data
-python csv2graph.py --data ./sample.csv --columns a,c,e --size 800x600 --skip 2 --xdata true --out output.png
+csv2graph --data ./sample.csv --columns a,c,e --size 800x600 --skip 2 --xdata --out output.png
 
-# Plot up to a specific range
-python csv2graph.py --data ./sample.csv --range 50 --columns a,c,e --out output.png
+# Plot data up to a specific range
+csv2graph --data ./sample.csv --range 50 --columns a,c,e --out output.png
 
 # Map X-axis values to a specific range
-python csv2graph.py --data ./sample.csv --columns a,c,e --xscale 0,100 --out output.png
+csv2graph --data ./sample.csv --columns a,c,e --xscale 0,100 --out output.png
+
+# Specify a custom title for the graph
+csv2graph --data ./sample.csv --columns a,c,e --title "Monthly Temperature Data" --out temp_graph.png
 ```
 
-## CSV File Examples
+## CSV File Example
 
-The tool supports CSV files in the following format:
+This tool supports CSV files in the following format:
 
 ```csv
 _,a,b,c,d
@@ -88,14 +78,14 @@ _,a,b,c,d
 ```
 
 In this CSV file:
-- The first column contains X-axis values (when `--xdata true` is specified)
-- Subsequent columns contain data for each series
+- The first column contains X-axis values (when `--xdata` is specified)
+- Subsequent columns contain data series
 - Values are comma-separated
 - A header row is required
 
 ### CSV File Example Without X-axis Data
 
-If X-axis data is not included, you can use a CSV file in this format:
+For files without X-axis data, you can use a CSV file in this format:
 
 ```csv
 a,b,c,d
@@ -106,34 +96,7 @@ a,b,c,d
 18,25,30,35
 ```
 
-In this case, X-axis values will automatically be assigned as sequential numbers starting from 1 (when `--xdata` is not specified or `--xdata false` is specified)
-
-### Installing as a Command-Line Tool
-
-To make `csv2graph` available as a command that can be run from anywhere (while your virtual environment is active), you can install it using the provided `setup.py`:
-
-```bash
-# With your virtual environment activated
-pip install -e .
-```
-
-This installs the package in "development mode" (or "editable mode"), which means:
-- The `csv2graph` command becomes available anywhere in your environment
-- Any changes you make to the code will be immediately available without reinstalling
-- You can run it simply by typing `csv2graph` followed by arguments
-
-To verify the installation worked, run:
-
-```bash
-csv2graph --help
-```
-
-Now you can use the tool from any directory without specifying the full path to the script:
-
-```bash
-# Run from any directory
-csv2graph --data ./data.csv --columns a,b,c --out output.png
-```
+In this case, X-axis values will be automatically assigned as sequential numbers starting from 1 (when `--xdata` is not specified)
 
 ## License
 
