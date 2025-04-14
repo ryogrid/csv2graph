@@ -1,4 +1,4 @@
-# csv2graph (Python)
+# csv2graph (Python Version)
 
 A Python command-line tool that generates scatter plots from CSV files.
 
