@@ -52,16 +52,16 @@ csv2graph --data CSV_FILE_PATH --columns SERIES1,SERIES2 [options]
 
 ```bash
 # Plot all data
-csv2graph --data ./sample.csv --columns a,c,e --size 800x600 --skip 2 --xdata --out output.png
+csv2graph --data ./example.csv --columns a,c,e --size 800x600 --skip 2 --xdata --out output.png
 
 # Plot data up to a specific range
-csv2graph --data ./sample.csv --range 50 --columns a,c,e --out output.png
+csv2graph --data ./example.csv --range 50 --columns a,c,e --out output.png
 
 # Map X-axis values to a specific range
-csv2graph --data ./sample.csv --columns a,c,e --xscale 0,100 --out output.png
+csv2graph --data ./example.csv --columns a,c,e --xscale 0,100 --out output.png
 
 # Specify a custom title for the graph
-csv2graph --data ./sample.csv --columns a,c,e --title "Monthly Temperature Data" --out temp_graph.png
+csv2graph --data ./example.csv --columns a,c,e --title "Monthly Temperature Data" --out temp_graph.png
 ```
 
 ## CSV File Example
