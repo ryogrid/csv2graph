@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>csv2graph – Browser Edition v2</title>
+<title>csv2graph – Browser Edition</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <style>
  body{font-family:Helvetica,Arial,sans-serif;margin:20px}
@@ -71,7 +71,7 @@ function makeTicks(min,max,pixels,labelSpacingPx=60){
   const step=niceNum(range/(maxTicks-1),true);
   const ticks=[];
   for(let v=Math.ceil(min/step)*step; v<=max-step*0.5; v+=step) ticks.push(+v.toFixed(10));
-  /* 縮退を防ぎつつ端点を必ず含める */
+  /* adust spacing */
   if(!ticks.includes(min)) ticks.unshift(min);
   if(!ticks.includes(max)) ticks.push(max);
   return ticks;
@@ -216,7 +216,7 @@ function plotGraph(csv){
 
 /* ---------- helpers -------------------------------------------------- */
 function formatNumber(v){
-  /* 可読性重視で小数点桁数を自動調整 */
+  /* switch float value display format for good UX */
   const abs=Math.abs(v);
   if(abs>=1000) return v.toFixed(0);
   if(abs>=1) return v.toFixed( (v%1===0)?0:2 );
